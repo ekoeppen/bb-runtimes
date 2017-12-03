@@ -399,3 +399,91 @@ class Stm32(CortexMTarget):
         self.add_sources('gnarl', [
             'arm/stm32/%s/svd/handler.S' % self.mcu,
             'arm/stm32/%s/svd/a-intnam.ads' % self.mcu])
+
+
+class Efm32CommonBSP(BSP):
+    """Holds sources common to all efm32 boards"""
+    @property
+    def name(self):
+        return 'efm32'
+
+    @property
+    def parent(self):
+        return CortexMArch
+
+    @property
+    def loaders(self):
+        return ('ROM', 'RAM', 'USER')
+
+    @property
+    def readme_file(self):
+        return 'arm/efm32/README'
+
+    def __init__(self):
+        super(Efm32CommonBSP, self).__init__()
+
+        self.add_linker_script('arm/efm32/common-ROM.ld', loader='ROM')
+
+        self.add_sources('crt0', [
+            'src/s-bbpara__efm32.ads',
+            'src/s-efm32.ads',
+            'arm/efm32/start-rom.S',
+            'arm/efm32/start-common.S'])
+
+
+class Efm32(CortexMTarget):
+    """Generic handling of EFM32 CPUs"""
+    @property
+    def name(self):
+        return self.board
+
+    @property
+    def parent(self):
+        return Efm32CommonBSP
+
+    @property
+    def use_semihosting_io(self):
+        return False
+
+    @property
+    def has_double_precision_fpu(self):
+        return False
+
+    @property
+    def cortex(self):
+        if self.mcu.startswith('efm32zg') or self.mcu.startswith('efm32hg'):
+            return 'cortex-m0'
+        elif self.mcu.startswith('efm32wg'):
+            return 'cortex-m4'
+        else:
+            return 'cortex-m3'
+
+    @property
+    def compiler_switches(self):
+        base = ('-mlittle-endian', '-mthumb')
+        if self.cortex == 'cortex-m0':
+            mcu = ('-mcpu=cortex-m0', )
+        elif self.cortex == 'cortex-m3':
+            mcu = ('-mcpu=cortex-m3', )
+        elif self.cortex == 'cortex-m4':
+            mcu = ('-mcpu=cortex-m4', '-mfloat=hard', )
+        return base + mcu
+
+    def __init__(self, board):
+        self.board = board
+        self.mcu = board
+
+        super(Efm32, self).__init__()
+
+        self.add_linker_script('arm/efm32/%s/memory-map.ld' % self.mcu,
+                               loader=('ROM'))
+        # startup code
+        self.add_sources('crt0', [
+            'arm/efm32/%s/s-bbbopa.ads' % self.mcu,
+            'arm/efm32/%s/s-bbmcpa.ads' % self.mcu,
+            'src/s-textio__efm32.adb'])
+
+        # ravenscar support
+        self.add_sources('gnarl', [
+            'arm/efm32/%s/handler.S' % self.mcu,
+            'arm/efm32/%s/a-intnam.ads' % self.mcu])

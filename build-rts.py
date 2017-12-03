@@ -14,7 +14,7 @@ from build_rts_support.rts_sources import SourceDirs
 from pikeos import ArmPikeOS, PpcPikeOS, X86PikeOS
 
 # Cortex-M runtimes
-from arm.cortexm import Stm32, Sam, SmartFusion2, LM3S
+from arm.cortexm import Stm32, Sam, SmartFusion2, LM3S, Efm32
 
 # Cortex-A/R runtimes
 from arm.cortexar import TMS570, Rpi2, Zynq7000
@@ -92,6 +92,8 @@ def build_configs(target):
         t = X8664Native()
     elif target == 'x86_64-windows':
         t = X8664Native()
+    elif target.startswith('efm32'):
+        t = Efm32(target)
     else:
         print 'Error: undefined target %s' % target
         sys.exit(2)
