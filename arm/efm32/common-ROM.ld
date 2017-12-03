@@ -42,7 +42,7 @@
 SEARCH_DIR(.)
 __DYNAMIC  =  0;
 
-_DEFAULT_STACK_SIZE = 4*1024;
+_DEFAULT_STACK_SIZE = 1*1024;
 
 ENTRY(_start_rom);
 
@@ -83,22 +83,6 @@ SECTIONS
     __data_end = .;
   } > sram_da
   __data_words = (__data_end - __data_start) >> 2;
-
-  __ccmdata_load = __rom_end + (__data_words << 2);
-  .ccmdata : AT (__ccmdata_load)
-  {
-    __ccmdata_start = .;
-    *(.ccmdata .ccmdata.*)
-
-    /* Ensure that the end of the data section is always word aligned.
-       Initial values are stored in 4-bytes blocks so we must guarantee
-       that these blocks do not fall out the section (otherwise they are
-       truncated and the initial data for the last block are lost). */
-
-    . = ALIGN(0x4);
-    __ccmdata_end = .;
-  } > ccm_da
-  __ccmdata_words = (__ccmdata_end - __ccmdata_start) >> 2;
 
   .bss (NOLOAD): {
    . = ALIGN(0x8);

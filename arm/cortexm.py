@@ -481,9 +481,11 @@ class Efm32(CortexMTarget):
         self.add_sources('crt0', [
             'arm/efm32/%s/s-bbbopa.ads' % self.mcu,
             'arm/efm32/%s/s-bbmcpa.ads' % self.mcu,
+            'arm/efm32/%s/s-secsta.ads' % self.mcu,
             'src/s-textio__efm32.adb'])
 
         # ravenscar support
         self.add_sources('gnarl', [
             'arm/efm32/%s/handler.S' % self.mcu,
+            'arm/efm32/%s/s-taprop.adb' % self.mcu,
             'arm/efm32/%s/a-intnam.ads' % self.mcu])
