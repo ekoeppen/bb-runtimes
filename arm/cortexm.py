@@ -281,15 +281,6 @@ class Stm32CommonBSP(BSP):
         self.add_linker_script('arm/stm32/common-RAM.ld', loader='RAM')
         self.add_linker_script('arm/stm32/common-ROM.ld', loader='ROM')
 
-        self.add_sources('crt0', [
-            'src/s-bbpara__stm32f4.ads',
-            'arm/stm32/s-stm32.ads',
-            'arm/stm32/start-rom.S',
-            'arm/stm32/start-ram.S',
-            'arm/stm32/start-common.S',
-            'arm/stm32/setup_pll.adb',
-            'arm/stm32/setup_pll.ads'])
-
 
 class Stm32(CortexMTarget):
     """Generic handling of stm32 boards"""
@@ -318,6 +309,8 @@ class Stm32(CortexMTarget):
             return 'cortex-m4'
         elif self.mcu.startswith('stm32f7'):
             return 'cortex-m7'
+        elif self.mcu.startswith('stm32f1') or self.mcu.startswith('stm32f3'):
+            return 'cortex-m3'
         else:
             assert False, "Unexpected MCU %s" % self.mcu
 
@@ -354,6 +347,8 @@ class Stm32(CortexMTarget):
             self.mcu = 'stm32f7x'
         elif self.board == 'stm32f769disco':
             self.mcu = 'stm32f7x9'
+        elif self.board == 'stm32nucleo-f303re':
+            self.mcu = 'stm32f303xe'
         else:
             assert False, "Unknown stm32 board: %s" % self.board
 
@@ -361,6 +356,26 @@ class Stm32(CortexMTarget):
 
         self.add_linker_script('arm/stm32/%s/memory-map.ld' % self.mcu,
                                loader=('RAM', 'ROM'))
+
+        if self.mcu != "stm32f303xe":
+            self.add_sources('crt0', [
+                'src/s-bbpara__stm32f4.ads',
+                'arm/stm32/s-stm32.ads',
+                'arm/stm32/start-rom.S',
+                'arm/stm32/start-ram.S',
+                'arm/stm32/start-common.S',
+                'arm/stm32/setup_pll.adb',
+                'arm/stm32/setup_pll.ads'])
+        else:
+            self.add_sources('crt0', [
+                'src/s-bbpara__stm32f3.ads',
+                'arm/stm32/s-stm32.ads',
+                'arm/stm32/start-rom.S',
+                'arm/stm32/start-ram.S',
+                'arm/stm32/%s/start-common.S' % self.mcu,
+                'arm/stm32/%s/setup_pll.adb' % self.mcu,
+                'arm/stm32/%s/setup_pll.ads' % self.mcu])
+
         # startup code
         self.add_sources('crt0', [
             'arm/stm32/%s/s-bbbopa.ads' % self.mcu,
@@ -400,6 +415,9 @@ class Stm32(CortexMTarget):
         elif self.board == 'stm32f769disco':
             self.add_sources('crt0', [
                 'arm/stm32/stm32f7x/s-stm32.adb'])
+        elif self.board == 'stm32nucleo-f303re':
+            self.add_sources('crt0', [
+                'src/s-stm32__f303xe.adb'])
 
         # ravenscar support
         self.add_sources('gnarl', [
