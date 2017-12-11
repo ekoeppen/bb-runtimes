@@ -51,6 +51,10 @@ package System.BB.Parameters is
    Has_FPU : constant Boolean := MCU_Parameters.Has_FPU;
    --  Set to true if core has a FPU
 
+   Has_VTOR : constant Boolean := True;
+   Has_OS_Extensions : constant Boolean := True;
+   Is_ARMv6m : constant Boolean := False;
+
    ----------------
    -- Interrupts --
    ----------------
@@ -93,7 +97,7 @@ package System.BB.Parameters is
    -- Stacks --
    ------------
 
-   Interrupt_Stack_Size : constant := 2 * 1024;
+   Interrupt_Stack_Size : constant := 256;
    --  Size of each of the interrupt stacks in bytes. While there nominally is
    --  an interrupt stack per interrupt priority, the entire space is used as a
    --  single stack.
