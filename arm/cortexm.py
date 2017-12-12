@@ -450,7 +450,7 @@ class Efm32CommonBSP(BSP):
 
         self.add_sources('crt0', [
             'src/s-bbpara__efm32.ads',
-            'src/s-efm32.ads',
+            'arm/efm32/s-efm32.ads',
             'arm/efm32/start-rom.S',
             'arm/efm32/start-common.S'])
 
