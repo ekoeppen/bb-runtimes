@@ -4,7 +4,7 @@
 ############################################
 
 	.syntax unified
-	.cpu cortex-m4
+	.cpu cortex-m0
 	.thumb
 
 	.text
@@ -94,3 +94,9 @@ __gnat_sys_tick_trap:
 
 	.thumb_func
 fault:	b fault
+
+	.global __sync_lock_test_and_set_1
+	.thumb_func
+__sync_lock_test_and_set_1:
+	bx lr
+

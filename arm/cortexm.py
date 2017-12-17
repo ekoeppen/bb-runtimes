@@ -278,9 +278,6 @@ class Stm32CommonBSP(BSP):
     def __init__(self):
         super(Stm32CommonBSP, self).__init__()
 
-        self.add_linker_script('arm/stm32/common-RAM.ld', loader='RAM')
-        self.add_linker_script('arm/stm32/common-ROM.ld', loader='ROM')
-
 
 class Stm32(CortexMTarget):
     """Generic handling of stm32 boards"""
@@ -318,9 +315,9 @@ class Stm32(CortexMTarget):
 
     @property
     def fpu(self):
-        if self.cortex == 'cortex-m4' or self.cortex == 'cortex-m3':
+        if self.cortex == 'cortex-m4':
             return 'fpv4-sp-d16'
-        elif self.cortex == 'cortex-m0':
+        elif self.cortex == 'cortex-m0' or self.cortex == 'cortex-m3':
             return ''
         elif not self.has_double_precision_fpu:
             return 'fpv5-sp-d16'
@@ -352,37 +349,73 @@ class Stm32(CortexMTarget):
             self.mcu = 'stm32f7x'
         elif self.board == 'stm32f769disco':
             self.mcu = 'stm32f7x9'
-        elif self.board == 'stm32nucleo-f303re':
+        elif self.board == 'stm32nucleo_f303re':
             self.mcu = 'stm32f303xe'
-        elif self.board == 'stm32nucleo-f072rb':
+        elif self.board == 'stm32f103xx':
+            self.mcu = 'stm32f103xx'
+        elif self.board == 'stm32nucleo_f072rb':
             self.mcu = 'stm32f072x'
         else:
             assert False, "Unknown stm32 board: %s" % self.board
 
         super(Stm32, self).__init__()
 
-        self.add_linker_script('arm/stm32/%s/memory-map.ld' % self.mcu,
-                               loader=('RAM', 'ROM'))
-
-        if self.mcu.startswith('stm32f3'):
+        if self.mcu.startswith('stm32f0'):
+            self.add_linker_script('arm/stm32/%s/common-ROM.ld' % self.mcu, loader='ROM')
+            self.add_sources('crt0', [
+                'src/s-bbpara__stm32f0.ads',
+                'arm/stm32/%s/start-rom.S' % self.mcu,
+                'arm/stm32/%s/s-stm32.ads' % self.mcu,
+                'arm/stm32/%s/start-common.S' % self.mcu,
+                'arm/stm32/%s/setup_pll.adb' % self.mcu,
+                'arm/stm32/%s/setup_pll.ads' % self.mcu,
+                'arm/stm32/%s/s-bbbopa.ads' % self.mcu,
+                'arm/stm32/%s/s-bbmcpa.ads' % self.mcu,
+                'arm/stm32/%s/s-bbmcpa.adb' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-flash.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-gpio.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-pwr.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-rcc.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-syscfg.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-usart.ads' % self.mcu])
+        elif self.mcu.startswith('stm32f1'):
+            self.add_linker_script('arm/stm32/%s/common-ROM.ld' % self.mcu, loader='ROM')
+            self.add_sources('crt0', [
+                'src/s-bbpara__stm32f1.ads',
+                'arm/stm32/%s/start-rom.S' % self.mcu,
+                'arm/stm32/%s/s-stm32.ads' % self.mcu,
+                'arm/stm32/%s/start-common.S' % self.mcu,
+                'arm/stm32/%s/setup_pll.adb' % self.mcu,
+                'arm/stm32/%s/setup_pll.ads' % self.mcu,
+                'arm/stm32/%s/s-bbbopa.ads' % self.mcu,
+                'arm/stm32/%s/s-bbmcpa.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-flash.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-gpio.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-rcc.ads' % self.mcu])
+        elif self.mcu.startswith('stm32f3'):
+            self.add_linker_script('arm/stm32/common-ROM.ld', loader='ROM')
             self.add_sources('crt0', [
                 'src/s-bbpara__stm32f3.ads',
                 'arm/stm32/s-stm32.ads',
                 'arm/stm32/start-rom.S',
-                'arm/stm32/start-ram.S',
                 'arm/stm32/%s/start-common.S' % self.mcu,
                 'arm/stm32/%s/setup_pll.adb' % self.mcu,
-                'arm/stm32/%s/setup_pll.ads' % self.mcu])
-        elif self.mcu.startswith('stm32f0'):
-            self.add_sources('crt0', [
-                'src/s-bbpara__stm32f0.ads',
-                'arm/stm32/start-rom.S',
-                'arm/stm32/start-ram.S',
-                'arm/stm32/%s/s-stm32.ads' % self.mcu,
-                'arm/stm32/%s/start-common.S' % self.mcu,
-                'arm/stm32/%s/setup_pll.adb' % self.mcu,
-                'arm/stm32/%s/setup_pll.ads' % self.mcu])
+                'arm/stm32/%s/setup_pll.ads' % self.mcu,
+                'arm/stm32/%s/s-bbbopa.ads' % self.mcu,
+                'arm/stm32/%s/s-bbmcpa.ads' % self.mcu,
+                'arm/stm32/%s/s-bbmcpa.adb' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-flash.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-gpio.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-pwr.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-rcc.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-syscfg.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-usart.ads' % self.mcu])
         else:
+            self.add_linker_script('arm/stm32/common-RAM.ld', loader='RAM')
+            self.add_linker_script('arm/stm32/common-ROM.ld', loader='ROM')
             self.add_sources('crt0', [
                 'src/s-bbpara__stm32f4.ads',
                 'arm/stm32/s-stm32.ads',
@@ -390,20 +423,17 @@ class Stm32(CortexMTarget):
                 'arm/stm32/start-ram.S',
                 'arm/stm32/start-common.S',
                 'arm/stm32/setup_pll.adb',
-                'arm/stm32/setup_pll.ads'])
-
-        # startup code
-        self.add_sources('crt0', [
-            'arm/stm32/%s/s-bbbopa.ads' % self.mcu,
-            'arm/stm32/%s/s-bbmcpa.ads' % self.mcu,
-            'arm/stm32/%s/s-bbmcpa.adb' % self.mcu,
-            'arm/stm32/%s/svd/i-stm32.ads' % self.mcu,
-            'arm/stm32/%s/svd/i-stm32-flash.ads' % self.mcu,
-            'arm/stm32/%s/svd/i-stm32-gpio.ads' % self.mcu,
-            'arm/stm32/%s/svd/i-stm32-pwr.ads' % self.mcu,
-            'arm/stm32/%s/svd/i-stm32-rcc.ads' % self.mcu,
-            'arm/stm32/%s/svd/i-stm32-syscfg.ads' % self.mcu,
-            'arm/stm32/%s/svd/i-stm32-usart.ads' % self.mcu])
+                'arm/stm32/setup_pll.ads',
+                'arm/stm32/%s/s-bbbopa.ads' % self.mcu,
+                'arm/stm32/%s/s-bbmcpa.ads' % self.mcu,
+                'arm/stm32/%s/s-bbmcpa.adb' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-flash.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-gpio.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-pwr.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-rcc.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-syscfg.ads' % self.mcu,
+                'arm/stm32/%s/svd/i-stm32-usart.ads' % self.mcu])
 
         if self.board == 'stm32f4':
             self.add_sources('crt0', [
@@ -431,10 +461,13 @@ class Stm32(CortexMTarget):
         elif self.board == 'stm32f769disco':
             self.add_sources('crt0', [
                 'arm/stm32/stm32f7x/s-stm32.adb'])
-        elif self.board == 'stm32nucleo-f303re':
+        elif self.board == 'stm32nucleo_f303re':
             self.add_sources('crt0', [
                 'src/s-stm32__f303xe.adb'])
-        elif self.board == 'stm32nucleo-f072rb':
+        elif self.board == 'stm32f103xx':
+            self.add_sources('crt0', [
+                'src/s-stm32__f103xx.adb'])
+        elif self.board == 'stm32nucleo_f072rb':
             self.add_sources('crt0', [
                 'src/s-stm32__f072x.adb'])
 
@@ -443,6 +476,8 @@ class Stm32(CortexMTarget):
             'arm/stm32/%s/svd/handler.S' % self.mcu,
             'arm/stm32/%s/svd/a-intnam.ads' % self.mcu])
 
+        self.add_linker_script('arm/stm32/%s/memory-map.ld' % self.mcu,
+                               loader=('RAM', 'ROM'))
 
 class Efm32CommonBSP(BSP):
     """Holds sources common to all efm32 boards"""

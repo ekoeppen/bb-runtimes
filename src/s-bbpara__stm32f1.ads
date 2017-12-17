@@ -60,9 +60,11 @@ package System.BB.Parameters is
    -- Prescalers --
    ----------------
 
-   AHB_PRE : constant System.STM32.AHB_Prescaler := System.STM32.AHBPRE_DIV1;
-   APB_PRE : constant System.STM32.APB_Prescaler :=
-                (Enabled => True, Value => System.STM32.DIV4);
+   AHB_PRE  : constant System.STM32.AHB_Prescaler := System.STM32.AHBPRE_DIV1;
+   APB1_PRE : constant System.STM32.APB_Prescaler :=
+                (Enabled => True, Value => System.STM32.DIV2);
+   APB2_PRE : constant System.STM32.APB_Prescaler :=
+                (Enabled => False, Value => System.STM32.DIV2);
 
    --------------------
    -- External Clock --
@@ -80,9 +82,9 @@ package System.BB.Parameters is
    Has_FPU : constant Boolean := False;
    --  Set to true if core has a FPU
 
-   Has_VTOR : constant Boolean := False;
+   Has_VTOR : constant Boolean := True;
    Has_OS_Extensions : constant Boolean := True;
-   Is_ARMv6m : constant Boolean := True;
+   Is_ARMv6m : constant Boolean := False;
 
    ----------------
    -- Interrupts --
@@ -126,7 +128,7 @@ package System.BB.Parameters is
    -- Stacks --
    ------------
 
-   Interrupt_Stack_Size : constant := 512;
+   Interrupt_Stack_Size : constant := 1 * 1024;
    --  Size of each of the interrupt stacks in bytes. While there nominally is
    --  an interrupt stack per interrupt priority, the entire space is used as a
    --  single stack.
