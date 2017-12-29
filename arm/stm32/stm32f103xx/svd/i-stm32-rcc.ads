@@ -2,7 +2,7 @@
 --  Copyright (C) 2017, AdaCore
 --
 
---  This spec has been automatically generated from STM32F103xx.svd
+--  This spec has been automatically generated from STM32F103.svd
 
 pragma Ada_2012;
 pragma Style_Checks (Off);

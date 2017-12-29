@@ -2,14 +2,14 @@
 --  Copyright (C) 2017, AdaCore
 --
 
---  This spec has been automatically generated from STM32F103xx.svd
+--  This spec has been automatically generated from STM32F103.svd
 
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
 with System;
 
---  STM32F103xx
+--  STM32F103
 package Interfaces.STM32 is
    pragma Preelaborate;
    pragma No_Elaboration_Code_All;
@@ -117,7 +117,7 @@ package Interfaces.STM32 is
    RTC_Base : constant System.Address :=
      System'To_Address (16#40002800#);
    BKP_Base : constant System.Address :=
-     System'To_Address (16#40006C04#);
+     System'To_Address (16#40006C00#);
    IWDG_Base : constant System.Address :=
      System'To_Address (16#40003000#);
    WWDG_Base : constant System.Address :=
@@ -172,8 +172,10 @@ package Interfaces.STM32 is
      System'To_Address (16#40012800#);
    ADC3_Base : constant System.Address :=
      System'To_Address (16#40013C00#);
-   CAN_Base : constant System.Address :=
+   CAN1_Base : constant System.Address :=
      System'To_Address (16#40006400#);
+   CAN2_Base : constant System.Address :=
+     System'To_Address (16#40006800#);
    DAC_Base : constant System.Address :=
      System'To_Address (16#40007400#);
    DBG_Base : constant System.Address :=
@@ -186,9 +188,35 @@ package Interfaces.STM32 is
      System'To_Address (16#40023000#);
    FLASH_Base : constant System.Address :=
      System'To_Address (16#40022000#);
-   NVIC_Base : constant System.Address :=
-     System'To_Address (16#E000E000#);
    USB_Base : constant System.Address :=
      System'To_Address (16#40005C00#);
+   OTG_FS_DEVICE_Base : constant System.Address :=
+     System'To_Address (16#50000800#);
+   OTG_FS_GLOBAL_Base : constant System.Address :=
+     System'To_Address (16#50000000#);
+   OTG_FS_HOST_Base : constant System.Address :=
+     System'To_Address (16#50000400#);
+   OTG_FS_PWRCLK_Base : constant System.Address :=
+     System'To_Address (16#50000E00#);
+   ETHERNET_MMC_Base : constant System.Address :=
+     System'To_Address (16#40028100#);
+   ETHERNET_MAC_Base : constant System.Address :=
+     System'To_Address (16#40028000#);
+   ETHERNET_PTP_Base : constant System.Address :=
+     System'To_Address (16#40028700#);
+   ETHERNET_DMA_Base : constant System.Address :=
+     System'To_Address (16#40029000#);
+   NVIC_Base : constant System.Address :=
+     System'To_Address (16#E000E100#);
+   MPU_Base : constant System.Address :=
+     System'To_Address (16#E000ED90#);
+   SCB_ACTRL_Base : constant System.Address :=
+     System'To_Address (16#E000E008#);
+   NVIC_STIR_Base : constant System.Address :=
+     System'To_Address (16#E000EF00#);
+   SCB_Base : constant System.Address :=
+     System'To_Address (16#E000ED00#);
+   STK_Base : constant System.Address :=
+     System'To_Address (16#E000E010#);
 
 end Interfaces.STM32;

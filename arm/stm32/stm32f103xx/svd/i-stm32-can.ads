@@ -2,7 +2,7 @@
 --  Copyright (C) 2017, AdaCore
 --
 
---  This spec has been automatically generated from STM32F103xx.svd
+--  This spec has been automatically generated from STM32F103.svd
 
 pragma Ada_2012;
 pragma Style_Checks (Off);
@@ -1838,7 +1838,11 @@ package Interfaces.STM32.CAN is
    end record;
 
    --  Controller area network
-   CAN_Periph : aliased CAN_Peripheral
+   CAN1_Periph : aliased CAN_Peripheral
      with Import, Address => System'To_Address (16#40006400#);
+
+   --  Controller area network
+   CAN2_Periph : aliased CAN_Peripheral
+     with Import, Address => System'To_Address (16#40006800#);
 
 end Interfaces.STM32.CAN;

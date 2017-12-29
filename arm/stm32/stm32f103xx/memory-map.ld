@@ -37,8 +37,7 @@
 MEMORY
 {
   flash   (rx) : ORIGIN = 0x08000000, LENGTH = 128K
-  vectors(rwx) : ORIGIN = 0x20000000, LENGTH = 256
-  sram12 (rwx) : ORIGIN = 0x20000100, LENGTH = 16K -256
+  sram12 (rwx) : ORIGIN = 0x20000000, LENGTH = 20K
 }
 
 REGION_ALIAS("sram_tx", sram12)

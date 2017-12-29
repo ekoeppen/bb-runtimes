@@ -2,7 +2,7 @@
 --  Copyright (C) 2017, AdaCore
 --
 
---  This spec has been automatically generated from STM32F103xx.svd
+--  This spec has been automatically generated from STM32F103.svd
 
 pragma Ada_2012;
 pragma Style_Checks (Off);
@@ -966,6 +966,6 @@ package Interfaces.STM32.BKP is
 
    --  Backup registers
    BKP_Periph : aliased BKP_Peripheral
-     with Import, Address => System'To_Address (16#40006C04#);
+     with Import, Address => System'To_Address (16#40006C00#);
 
 end Interfaces.STM32.BKP;

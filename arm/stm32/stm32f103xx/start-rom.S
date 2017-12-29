@@ -73,29 +73,6 @@ _start_rom:
 	subs	r1,r1,#1
 	bne	0b
 
-	/* Copy interrupt vectors */
-	ldr	r0, =0x20000000
-	movs	r1, #50
-	ldr	r2, =__vectors
-0:	ldr	r4, [r2]
-	str	r4, [r0]
-	adds	r0, #4
-	adds	r2, #4
-	subs	r1, #1
-	bne 	0b
-
-	ldr	r0, =0x40021000
-	ldr	r1, [r0]
-	movs	r2, #1
-	orrs	r1, r2
-	str	r1, [r0]
-
-	ldr	r0, =0x40010000
-	ldr	r1, [r0]
-	movs	r2, #3
-	orrs	r1, r2
-	str	r1, [r0]
-
 1:
 	bl	_ada_setup_pll
 	bl	main

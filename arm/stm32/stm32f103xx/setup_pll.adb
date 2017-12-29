@@ -72,7 +72,7 @@ procedure Setup_Pll is
 
       PLLCLKOUT   : constant Integer := PLLCLKIN * PLLMUL_Value;
 
-      PLLMUL      : constant UInt4 := UInt4 (PLLMUL_Value);
+      PLLMUL      : constant UInt4 := UInt4 (PLLMUL_Value) - 2;
 
       SW          : constant SYSCLK_Source :=
                       (if Activate_PLL then SYSCLK_SRC_PLL

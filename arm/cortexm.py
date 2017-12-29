@@ -291,6 +291,8 @@ class Stm32(CortexMTarget):
 
     @property
     def use_semihosting_io(self):
+        if self.board == 'stm32f103xx':
+            return False
         return True
 
     @property
@@ -383,6 +385,9 @@ class Stm32(CortexMTarget):
             self.add_linker_script('arm/stm32/%s/common-ROM.ld' % self.mcu, loader='ROM')
             self.add_sources('crt0', [
                 'src/s-bbpara__stm32f1.ads',
+                'src/s-textio__itm.adb',
+                'src/i-arm_itm.ads',
+                'src/i-arm_itm.adb',
                 'arm/stm32/%s/start-rom.S' % self.mcu,
                 'arm/stm32/%s/s-stm32.ads' % self.mcu,
                 'arm/stm32/%s/start-common.S' % self.mcu,
