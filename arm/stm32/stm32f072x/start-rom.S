@@ -35,6 +35,7 @@
 	   VTOR register) defined in handler.S.  */
 	.section .vectors,"a"
 __vectors0:
+	.weak __vectors
 	.word   __stack_end /* stack top address */
 	.word   _start_rom  /* 1 Reset */
 	.word   hang        /* 2 NMI */

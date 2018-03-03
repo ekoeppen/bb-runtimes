@@ -15,7 +15,7 @@ __vectors:
 	.word   0                    /* stack top address */
 	.word   fault                /* 1 Reset.  */
 	.word   fault                /* 2 NMI. */
-	.word   fault                /* 3 Hard fault. */
+	.word   hardfault            /* 3 Hard fault. */
 	.word   fault                /* 4 Mem manage. */
 	.word   fault                /* 5 Bus fault. */
 	.word   fault                /* 6 Usage fault. */
@@ -143,4 +143,11 @@ __gnat_sys_tick_trap:
 	.size __gnat_sys_tick_trap, . - __gnat_sys_tick_trap
 
 	.thumb_func
-fault:	b fault
+	.type fault, %function
+fault:
+	b fault
+
+	.thumb_func
+	.type hardfault, %function
+hardfault:
+	b hardfault
