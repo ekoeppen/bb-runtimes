@@ -357,6 +357,8 @@ class Stm32(CortexMTarget):
             self.mcu = 'stm32f103xx'
         elif self.board == 'stm32nucleo_f072rb':
             self.mcu = 'stm32f072x'
+        elif self.board == 'stm32f0disco':
+            self.mcu = 'stm32f051x8'
         else:
             assert False, "Unknown stm32 board: %s" % self.board
 
@@ -374,6 +376,7 @@ class Stm32(CortexMTarget):
                 'arm/stm32/%s/s-bbbopa.ads' % self.mcu,
                 'arm/stm32/%s/s-bbmcpa.ads' % self.mcu,
                 'arm/stm32/%s/s-bbmcpa.adb' % self.mcu,
+                'arm/stm32/%s/svd/handler.S' % self.mcu,
                 'arm/stm32/%s/svd/i-stm32.ads' % self.mcu,
                 'arm/stm32/%s/svd/i-stm32-flash.ads' % self.mcu,
                 'arm/stm32/%s/svd/i-stm32-gpio.ads' % self.mcu,
@@ -388,6 +391,7 @@ class Stm32(CortexMTarget):
                 'src/s-textio__itm.adb',
                 'src/i-arm_itm.ads',
                 'src/i-arm_itm.adb',
+                'arm/stm32/%s/svd/handler.S' % self.mcu,
                 'arm/stm32/%s/start-rom.S' % self.mcu,
                 'arm/stm32/%s/s-stm32.ads' % self.mcu,
                 'arm/stm32/%s/start-common.S' % self.mcu,
@@ -429,6 +433,7 @@ class Stm32(CortexMTarget):
                 'arm/stm32/start-common.S',
                 'arm/stm32/setup_pll.adb',
                 'arm/stm32/setup_pll.ads',
+                'arm/stm32/%s/svd/handler.S' % self.mcu,
                 'arm/stm32/%s/s-bbbopa.ads' % self.mcu,
                 'arm/stm32/%s/s-bbmcpa.ads' % self.mcu,
                 'arm/stm32/%s/s-bbmcpa.adb' % self.mcu,
@@ -475,10 +480,12 @@ class Stm32(CortexMTarget):
         elif self.board == 'stm32nucleo_f072rb':
             self.add_sources('crt0', [
                 'src/s-stm32__f072x.adb'])
+        elif self.board == 'stm32f0disco':
+            self.add_sources('crt0', [
+                'src/s-stm32__f051.adb'])
 
         # ravenscar support
         self.add_sources('gnarl', [
-            'arm/stm32/%s/svd/handler.S' % self.mcu,
             'arm/stm32/%s/svd/a-intnam.ads' % self.mcu])
 
         self.add_linker_script('arm/stm32/%s/memory-map.ld' % self.mcu,
