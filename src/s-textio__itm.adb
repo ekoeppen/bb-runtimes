@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                  GNAT RUN-TIME LIBRARY (GNARL) COMPONENTS                --
+--                         GNAT RUN-TIME COMPONENTS                         --
 --                                                                          --
---              S Y S T E M . B B . M C U _ P A R A M E T E R S             --
+--                        S Y S T E M . T E X T _ I O                       --
 --                                                                          --
---                                  S p e c                                 --
+--                                 B o d y                                  --
 --                                                                          --
---                      Copyright (C) 2016, AdaCore                         --
+--            Copyright (C) 2011, Free Software Foundation, Inc.            --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -27,23 +27,69 @@
 -- GNAT was originally developed  by the GNAT team at  New York University. --
 -- Extensive contributions were provided by Ada Core Technologies Inc.      --
 --                                                                          --
--- The port of GNARL to bare board targets was initially developed by the   --
--- Real-Time Systems Group at the Technical University of Madrid.           --
---                                                                          --
 ------------------------------------------------------------------------------
 
---  This package defines MCU parameters for the STM32F40x family
+--  Really simple implementation of System.Text_IO for systems without
+--  console.
 
-with Interfaces.STM32;
-with Interfaces.STM32.PWR;
+with Interfaces.ARM_ITM;
 
-package System.BB.MCU_Parameters is
-   pragma No_Elaboration_Code_All;
-   pragma Preelaborate;
-   use type Interfaces.STM32.Bit;
+package body System.Text_IO is
 
-   Number_Of_Interrupts : constant := 29;
+   ---------
+   -- Get --
+   ---------
 
-   procedure PWR_Initialize;
+   function Get return Character is
+   begin
+      --  Will never be called.
+      raise Program_Error;
+      return ASCII.NUL;
+   end Get;
 
-end System.BB.MCU_Parameters;
+   ----------------
+   -- Initialize --
+   ----------------
+
+   procedure Initialize is
+   begin
+      Initialized := True;
+   end Initialize;
+
+   -----------------
+   -- Is_Rx_Ready --
+   -----------------
+
+   function Is_Rx_Ready return Boolean is
+   begin
+      return False;
+   end Is_Rx_Ready;
+
+   -----------------
+   -- Is_Tx_Ready --
+   -----------------
+
+   function Is_Tx_Ready return Boolean is
+   begin
+      return True;
+   end Is_Tx_Ready;
+
+   ---------
+   -- Put --
+   ---------
+
+   procedure Put (C : Character) is
+   begin
+      Interfaces.ARM_ITM.Send_Char (C);
+   end Put;
+
+   ----------------------------
+   -- Use_Cr_Lf_For_New_Line --
+   ----------------------------
+
+   function Use_Cr_Lf_For_New_Line return Boolean is
+   begin
+      return False;
+   end Use_Cr_Lf_For_New_Line;
+
+end System.Text_IO;

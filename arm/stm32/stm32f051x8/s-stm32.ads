@@ -180,8 +180,8 @@ package System.STM32 is
 
    --  These internal low and high speed clocks are fixed (do not modify)
 
-   HSICLK : constant := 8_000_000;
-   LSICLK : constant :=    32_000;
+   HSICLK : constant :=  8_000_000;
+   LSICLK : constant :=     32_000;
 
    MCU_ID : MCU_ID_Register with Volatile,
                                  Address => System'To_Address (16#E004_2000#);

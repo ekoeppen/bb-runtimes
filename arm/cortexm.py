@@ -291,7 +291,7 @@ class Stm32(CortexMTarget):
 
     @property
     def use_semihosting_io(self):
-        if self.board == 'stm32f103xx':
+        if self.board == 'stm32f103xx' or self.board.startswith('stm32f0'):
             return False
         return True
 
@@ -359,6 +359,8 @@ class Stm32(CortexMTarget):
             self.mcu = 'stm32f072x'
         elif self.board == 'stm32f0disco':
             self.mcu = 'stm32f051x8'
+        elif self.board == 'stm32f030c8_breakout':
+            self.mcu = 'stm32f030x8'
         else:
             assert False, "Unknown stm32 board: %s" % self.board
 
@@ -482,7 +484,11 @@ class Stm32(CortexMTarget):
                 'src/s-stm32__f072x.adb'])
         elif self.board == 'stm32f0disco':
             self.add_sources('crt0', [
+                'src/s-textio__stm32f0.adb',
                 'src/s-stm32__f051.adb'])
+        elif self.board == 'stm32f030c8_breakout':
+            self.add_sources('crt0', [
+                'src/s-stm32__f030.adb'])
 
         # ravenscar support
         self.add_sources('gnarl', [

@@ -4,7 +4,7 @@
 --                                                                          --
 --              S Y S T E M . B B . M C U _ P A R A M E T E R S             --
 --                                                                          --
---                                  S p e c                                 --
+--                                  B o d y                                 --
 --                                                                          --
 --                      Copyright (C) 2016, AdaCore                         --
 --                                                                          --
@@ -32,18 +32,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package defines MCU parameters for the STM32F40x family
+with Interfaces.STM32.PWR; use Interfaces.STM32.PWR;
 
-with Interfaces.STM32;
-with Interfaces.STM32.PWR;
+package body System.BB.MCU_Parameters is
 
-package System.BB.MCU_Parameters is
-   pragma No_Elaboration_Code_All;
-   pragma Preelaborate;
-   use type Interfaces.STM32.Bit;
+   --------------------
+   -- PWR_Initialize --
+   --------------------
 
-   Number_Of_Interrupts : constant := 29;
-
-   procedure PWR_Initialize;
+   procedure PWR_Initialize
+   is
+   begin
+      null;
+   end PWR_Initialize;
 
 end System.BB.MCU_Parameters;

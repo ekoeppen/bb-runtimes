@@ -2,11 +2,11 @@
 --                                                                          --
 --                  GNAT RUN-TIME LIBRARY (GNARL) COMPONENTS                --
 --                                                                          --
---              S Y S T E M . B B . M C U _ P A R A M E T E R S             --
+--            S Y S T E M . B B . B O A R D _ P A R A M E T E R S           --
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                      Copyright (C) 2016, AdaCore                         --
+--                   Copyright (C) 2016-2017, AdaCore                       --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -32,18 +32,22 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package defines MCU parameters for the STM32F40x family
+--  This package defines board parameters for the Nucleo-F303RE board
 
-with Interfaces.STM32;
-with Interfaces.STM32.PWR;
-
-package System.BB.MCU_Parameters is
+package System.BB.Board_Parameters is
    pragma No_Elaboration_Code_All;
-   pragma Preelaborate;
-   use type Interfaces.STM32.Bit;
+   pragma Pure;
 
-   Number_Of_Interrupts : constant := 29;
+   --------------------
+   -- Hardware clock --
+   --------------------
 
-   procedure PWR_Initialize;
+   Main_Clock_Frequency : constant := 8_000_000;
+   --  Optimal frequency of the system clock.
 
-end System.BB.MCU_Parameters;
+   HSE_Clock_Frequency : constant := 8_000_000;
+   --  Frequency of High Speed External clock.
+
+   FLASH_Latency : constant := 0;
+
+end System.BB.Board_Parameters;
