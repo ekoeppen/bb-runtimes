@@ -34,7 +34,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with System.Machine_Code;
+with System.Machine_Code; use System.Machine.Code;
 
 with System.BB.Parameters; use System.BB.Parameters;
 
