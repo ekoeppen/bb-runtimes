@@ -34,12 +34,9 @@
 
 --  This package defines MCU parameters for the STM32F40x family
 
-with Interfaces.STM32;
-
 package System.BB.MCU_Parameters is
    pragma No_Elaboration_Code_All;
    pragma Preelaborate;
-   use type Interfaces.STM32.Bit;
 
    Number_Of_Interrupts : constant := 75;
 
