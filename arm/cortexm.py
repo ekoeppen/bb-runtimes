@@ -631,7 +631,7 @@ class Stm32(ArmV7MTarget):
         self.add_linker_script('arm/stm32/%s/memory-map.ld' % self.mcu,
                                loader=('RAM', 'ROM'))
 
-class Efm32CommonBSP(BSP):
+class Efm32CommonBSP(ArmV7MTarget):
     """Holds sources common to all efm32 boards"""
     @property
     def name(self):
@@ -661,7 +661,7 @@ class Efm32CommonBSP(BSP):
             'arm/efm32/start-common.S'])
 
 
-class Efm32(CortexMTarget):
+class Efm32(Efm32CommonBSP):
     """Generic handling of EFM32 CPUs"""
     @property
     def name(self):
