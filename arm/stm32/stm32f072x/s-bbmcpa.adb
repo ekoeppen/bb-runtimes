@@ -32,8 +32,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Interfaces.STM32.PWR; use Interfaces.STM32.PWR;
-
 package body System.BB.MCU_Parameters is
 
    --------------------
