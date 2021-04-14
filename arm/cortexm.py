@@ -997,11 +997,34 @@ class CortexM0(ArmV6MTarget):
     def compiler_switches(self):
         # The required compiler switches
         return ('-mlittle-endian', '-mthumb', '-msoft-float',
-                '-mcpu=cortex-m0')
+                '-mcpu=cortex-m0', '-ffunction-sections', '-fdata-sections')
+
+    @property
+    def ld_switches(self):
+        return [{'switch': '-Wl,--gc-sections', 'loader':''}]
 
     @property
     def system_ads(self):
-        return {'zfp': 'system-xi-arm.ads'}
+        return {'zfp': 'system-xi-arm.ads',
+                'ravenscar-sfp': 'system-xi-armv6m-sfp.ads',
+                'ravenscar-full': 'system-xi-armv6m-full.ads'}
+
+    def __init__(self):
+        super(CortexM0, self).__init__()
+
+        self.add_gnat_sources('src/s-bbpara__cortexm0.ads',
+                'arm/cortex/s-bbbopa.ads.tmpl',
+                'arm/cortex/s-bbmcpa.ads.tmpl')
+
+        self.add_gnarl_sources(
+            'src/s-bbbosu__armv6m.adb',
+            'src/s-bcpcst__pendsv.adb')
+
+        self.add_template_config_value('STM32_Main_Clock_Frequency', '8_000_000')
+        self.add_template_config_value('STM32_Number_Of_Interrupts', '32')
+
+        # ravenscar support
+        self.add_gnarl_sources('arm/cortex/handler.S.tmpl')
 
 
 class CortexM0P(CortexM0):
@@ -1037,7 +1060,26 @@ class CortexM1(ArmV6MTarget):
 
     @property
     def system_ads(self):
-        return {'zfp': 'system-xi-arm.ads'}
+        return {'zfp': 'system-xi-arm.ads',
+                'ravenscar-sfp': 'system-xi-armv6m-sfp.ads',
+                'ravenscar-full': 'system-xi-armv6m-full.ads'}
+
+    def __init__(self):
+        super(CortexM1, self).__init__()
+
+        self.add_gnat_sources('src/s-bbpara__cortexm0.ads',
+                'arm/cortex/s-bbbopa.ads.tmpl',
+                'arm/cortex/s-bbmcpa.ads.tmpl')
+
+        self.add_gnarl_sources(
+            'src/s-bbbosu__armv6m.adb',
+            'src/s-bcpcst__pendsv.adb')
+
+        self.add_template_config_value('STM32_Main_Clock_Frequency', '8_000_000')
+        self.add_template_config_value('STM32_Number_Of_Interrupts', '32')
+
+        # ravenscar support
+        self.add_gnarl_sources('arm/cortex/handler.S.tmpl')
 
 
 class CortexM3(ArmV7MTarget):
@@ -1061,7 +1103,29 @@ class CortexM3(ArmV7MTarget):
 
     @property
     def system_ads(self):
-        return {'zfp': 'system-xi-arm.ads'}
+        return {'zfp': 'system-xi-arm.ads',
+                'ravenscar-sfp': 'system-xi-cortexm4-sfp.ads',
+                'ravenscar-full': 'system-xi-cortexm4-full.ads'}
+
+    def __init__(self):
+        super(CortexM3, self).__init__()
+
+        self.add_gnat_sources('src/s-bbpara__cortexm0.ads',
+                'arm/cortex/s-bbbopa.ads.tmpl',
+                'arm/cortex/s-bbmcpa.ads.tmpl')
+
+        self.add_gnarl_sources(
+            'src/s-bbbosu__armv7m.adb',
+            'src/s-bcpcst__pendsv.adb')
+
+        self.add_template_config_value('STM32_Main_Clock_Frequency', '8_000_000')
+        self.add_template_config_value('STM32_Number_Of_Interrupts', '128')
+        self.add_gnat_sources(
+                'arm/cortex/s-bbbopa.ads.tmpl',
+                'arm/cortex/s-bbmcpa.ads.tmpl')
+
+        # ravenscar support
+        self.add_gnarl_sources('arm/cortex/handler.S.tmpl')
 
 
 class CortexM4(ArmV7MTarget):
@@ -1085,7 +1149,25 @@ class CortexM4(ArmV7MTarget):
 
     @property
     def system_ads(self):
-        return {'zfp': 'system-xi-arm.ads'}
+        return {'zfp': 'system-xi-arm.ads',
+                'ravenscar-sfp': 'system-xi-cortexm4-sfp.ads',
+                'ravenscar-full': 'system-xi-cortexm4-full.ads'}
+
+    def __init__(self):
+        super(CortexM4, self).__init__()
+
+        self.add_gnat_sources('src/s-bbpara__cortexm0.ads',
+                'arm/cortex/s-bbbopa.ads.tmpl',
+                'arm/cortex/s-bbmcpa.ads.tmpl')
+
+        self.add_template_config_value('STM32_Main_Clock_Frequency', '8_000_000')
+        self.add_template_config_value('STM32_Number_Of_Interrupts', '128')
+        self.add_gnat_sources(
+                'arm/cortex/s-bbbopa.ads.tmpl',
+                'arm/cortex/s-bbmcpa.ads.tmpl')
+
+        # ravenscar support
+        self.add_gnarl_sources('arm/cortex/handler.S.tmpl')
 
 
 class CortexM4F(CortexM4):
@@ -1121,7 +1203,25 @@ class CortexM7F(ArmV7MTarget):
 
     @property
     def system_ads(self):
-        return {'zfp': 'system-xi-arm.ads'}
+        return {'zfp': 'system-xi-arm.ads',
+                'ravenscar-sfp': 'system-xi-cortexm4-sfp.ads',
+                'ravenscar-full': 'system-xi-cortexm4-full.ads'}
+
+    def __init__(self):
+        super(CortexM7F, self).__init__()
+
+        self.add_gnat_sources('src/s-bbpara__cortexm0.ads',
+                'arm/cortex/s-bbbopa.ads.tmpl',
+                'arm/cortex/s-bbmcpa.ads.tmpl')
+
+        self.add_template_config_value('STM32_Main_Clock_Frequency', '8_000_000')
+        self.add_template_config_value('STM32_Number_Of_Interrupts', '128')
+        self.add_gnat_sources(
+                'arm/cortex/s-bbbopa.ads.tmpl',
+                'arm/cortex/s-bbmcpa.ads.tmpl')
+
+        # ravenscar support
+        self.add_gnarl_sources('arm/cortex/handler.S.tmpl')
 
 
 class CortexM7DF(CortexM7F):
